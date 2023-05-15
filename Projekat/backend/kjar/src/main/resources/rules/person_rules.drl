@@ -1,0 +1,57 @@
+package rules;
+
+import com.ftn.model.enums.AgeRange;
+import com.ftn.model.Person;
+import com.ftn.model.PersonQuery;
+
+global PersonQuery pq
+
+rule "Person is a child"
+    agenda-group "person_rules"
+    lock-on-active true
+    when
+        $p:Person(pq.getAge()<14)
+    then
+        System.out.println("Person is a child");
+        modify($p){ setAgeRange(AgeRange.CHILD); }
+end
+
+rule "Person is an adolescent"
+    agenda-group "person_rules"
+    lock-on-active true
+    when
+        $p:Person(pq.getAge()>=14 && pq.getAge()<19)
+    then
+        System.out.println("Person is an adolescent");
+        modify($p){ setAgeRange(AgeRange.ADOLESCENT); }
+end
+
+rule "Person is a young adult"
+    agenda-group "person_rules"
+    lock-on-active true
+    when
+        $p:Person(pq.getAge()>=19 && pq.getAge()<26)
+    then
+        System.out.println("Person is a young adult");
+        modify($p){ setAgeRange(AgeRange.YOUNG_ADULT); }
+end
+
+rule "Person is an adult"
+    agenda-group "person_rules"
+    lock-on-active true
+    when
+        $p:Person(pq.getAge()>=26 && pq.getAge()<51)
+    then
+        System.out.println("Person is an adult");
+        modify($p){ setAgeRange(AgeRange.ADULT); }
+end
+
+rule "Person is an older adult"
+    agenda-group "person_rules"
+    lock-on-active true
+    when
+        $p:Person(pq.getAge()>=51)
+    then
+        System.out.println("Person is an older adult");
+        modify($p){ setAgeRange(AgeRange.OLDER_ADULT); }
+end
