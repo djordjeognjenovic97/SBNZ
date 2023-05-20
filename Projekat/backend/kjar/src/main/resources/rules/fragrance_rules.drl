@@ -1,0 +1,42 @@
+package rules;
+
+import com.ftn.model.enums.Season;
+import com.ftn.model.enums.DayOrNight;
+import com.ftn.model.enums.Longevity;
+import com.ftn.model.Fragrance;
+import com.ftn.model.FragranceQuery;
+import com.ftn.model.DayNight;
+
+global FragranceQuery fq
+
+rule "Add points to favorite designer"
+    agenda-group "fragrance_rules"
+    lock-on-active true
+    when
+        $f:Fragrance(fq != null, getDesigner() != null, getDesigner().equalsIgnoreCase(fq.getBrand()))
+    then
+        System.out.println("Favorite designer(" + $f.getDesigner()+")");
+        modify($f){ addScore(15); }
+end
+
+rule "Add points to favorite family"
+    agenda-group "fragrance_rules"
+    lock-on-active true
+    when
+        $f:Fragrance(fq != null, getFamily() != null, getFamily() == fq.getFamily())
+    then
+        System.out.println("Favorite family(" + $f.getFamily()+")");
+        modify($f){ addScore(10); }
+end
+
+rule "Recommend longevity summer daytime"
+    agenda-group "person_fragrance_rules"
+    salience 5
+    no-loop
+    when
+        $f:Fragrance(fq.getSeason() == Season.SUMMER)
+        $dn: DayNight(getValue() == DayOrNight.DAY)
+    then
+        System.out.println("Longevity short");
+        modify($f){ setLongevity(Longevity.SHORT); }
+end

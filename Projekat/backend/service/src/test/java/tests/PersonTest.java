@@ -20,7 +20,7 @@ public class PersonTest {
         KieServices ks = KieServices.Factory.get();
     	KieContainer kc = ks.newKieClasspathContainer();
         KieSession ksession = kc.newKieSession(ksessionName);
-        ksession.getAgenda().getAgendaGroup("person_rules").setFocus();
+        //ksession.getAgenda().getAgendaGroup("person_rules").setFocus();
 
         PersonQuery q = new PersonQuery(12);
         ksession.setGlobal("pq", q);

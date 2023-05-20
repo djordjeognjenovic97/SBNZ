@@ -1,0 +1,69 @@
+package rules;
+
+import com.ftn.model.enums.Gender;
+import com.ftn.model.enums.AgeRange;
+import com.ftn.model.enums.Occasion;
+import com.ftn.model.enums.DayOrNight;
+import com.ftn.model.PersonQuery;
+import com.ftn.model.Fragrance;
+import com.ftn.model.Person;
+import com.ftn.model.DayNight;
+
+global PersonQuery pq
+
+rule "Add points to gender"
+    agenda-group "person_fragrance_rules"
+    lock-on-active true
+    when
+        $f:Fragrance(getGender() != null, getGender() == pq.getGender() )
+    then
+        System.out.println("Gender(" + $f.getGender()+")");
+        modify($f){ addScore(30); }
+end
+
+rule "Unisex rule"
+    agenda-group "person_fragrance_rules"
+    lock-on-active true
+    when
+        $f:Fragrance(getGender() != null, getGender() != pq.getGender() && pq.getGender() == Gender.UNISEX )
+    then
+        System.out.println("Also smaller points to this (" + $f.getGender()+") fragrance");
+        modify($f){ addScore(15); }
+end
+
+rule "Add points to Versace fragrances if a person is young adult and male" 
+    agenda-group "person_rules"
+    no-loop
+    salience 5
+    when
+        $p:Person(getAgeRange() == AgeRange.YOUNG_ADULT && getGender() == Gender.MALE)
+        $f:Fragrance(getDesigner() != null, getDesigner().equalsIgnoreCase("Versace"))
+    then
+        //System.out.println("Add points to (" + $f.getDesigner() + ") fragrance AR-G rule");
+        System.out.println("Add points to Versace fragrance AR-G rule");
+        modify($f){ addScore(15); }
+end
+
+rule "Daytime rule"
+    agenda-group "person_fragrance_rules"
+    salience 10
+    lock-on-active true
+    when
+        $f:Fragrance(pq.getOccasion() == Occasion.OFFICE || pq.getOccasion() == Occasion.EVERYDAY)
+        $dn: DayNight()
+    then
+        System.out.println("Daytime");
+        modify($dn) {setValue(DayOrNight.DAY) };
+end
+
+rule "Nighttime rule"
+    agenda-group "person_fragrance_rules"
+    salience 10
+    lock-on-active true
+    when
+        $f:Fragrance(pq.getOccasion() == Occasion.PARTY || pq.getOccasion() == Occasion.DATE)
+        $dn: DayNight()
+    then
+        System.out.println("Nighttime");
+        modify($dn) {setValue(DayOrNight.NIGHT) };
+end
