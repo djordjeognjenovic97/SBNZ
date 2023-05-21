@@ -123,10 +123,10 @@ rule "Recommend projection young adult and party"
     no-loop
     when
         $p:Person(pq != null, getAgeRange() == AgeRange.YOUNG_ADULT, pq.getOccasion() == Occasion.PARTY )
-        $f:Fragrance()
+        $f:Fragrance(getProjection() != null, getProjection() == Projection.STRONG)
     then
         System.out.println("Projection strong");
-        modify($f){ setProjection(Projection.STRONG); }
+        modify($f){ addScore(5); }
 end
 
 rule "Recommend projection adult and office"
@@ -135,10 +135,10 @@ rule "Recommend projection adult and office"
     no-loop
     when
         $p:Person(pq != null, getAgeRange() == AgeRange.ADULT, pq.getOccasion() == Occasion.OFFICE )
-        $f:Fragrance()
+        $f:Fragrance(getProjection() != null, getProjection() == Projection.INTIMATE)
     then
         System.out.println("Projection intimate");
-        modify($f){ setProjection(Projection.INTIMATE); }
+        modify($f){ addScore(5); }
 end
 
 rule "Recommend projection young adult and everyday"
@@ -147,8 +147,8 @@ rule "Recommend projection young adult and everyday"
     no-loop
     when
         $p:Person(pq != null, getAgeRange() == AgeRange.YOUNG_ADULT, pq.getOccasion() == Occasion.EVERYDAY )
-        $f:Fragrance()
+        $f:Fragrance(getProjection() != null, getProjection() == Projection.MODERATE)
     then
         System.out.println("Projection moderate");
-        modify($f){ setProjection(Projection.MODERATE); }
+        modify($f){ addScore(5); }
 end

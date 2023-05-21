@@ -35,6 +35,11 @@ public class Fragrance {
         this.score = score;
     }
 
+    public Fragrance(Projection projection, Integer score) {
+        this.projection = projection;
+        this.score = score;
+    }
+
     public String getName() {
         return name;
     }

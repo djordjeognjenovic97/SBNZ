@@ -311,7 +311,7 @@ public class PersonFragranceTest {
     }
 
     @Test
-    public void testProjectionYoungAdultParty() {
+    public void testProjectionStrongYoungAdultParty() {
 
         KieServices ks = KieServices.Factory.get();
     	KieContainer kc = ks.newKieClasspathContainer();
@@ -321,20 +321,20 @@ public class PersonFragranceTest {
         ksession.setGlobal("pq", q);
         Person p = new Person();
         ksession.insert(p);
-        Fragrance f = new Fragrance();
+        Fragrance f = new Fragrance(Projection.STRONG, 0);
         ksession.insert(f);
 
         ksession.getAgenda().getAgendaGroup("person_rules").setFocus();
         ksession.fireAllRules();
 
-        assertEquals(f.getProjection(), Projection.STRONG);
+        assertEquals(f.getScore(), 5);
 
         ksession.dispose();
         
     }
 
     @Test
-    public void testProjectionYoungAdultEveryday() {
+    public void testProjectionModerateYoungAdultEveryday() {
 
         KieServices ks = KieServices.Factory.get();
     	KieContainer kc = ks.newKieClasspathContainer();
@@ -344,20 +344,20 @@ public class PersonFragranceTest {
         ksession.setGlobal("pq", q);
         Person p = new Person();
         ksession.insert(p);
-        Fragrance f = new Fragrance();
+        Fragrance f = new Fragrance(Projection.MODERATE, 0);
         ksession.insert(f);
 
         ksession.getAgenda().getAgendaGroup("person_rules").setFocus();
         ksession.fireAllRules();
 
-        assertEquals(f.getProjection(), Projection.MODERATE);
+        assertEquals(f.getScore(), 5);
 
         ksession.dispose();
         
     }
 
     @Test
-    public void testProjectionAdultOffice() {
+    public void testProjectionIntimateAdultOffice() {
 
         KieServices ks = KieServices.Factory.get();
     	KieContainer kc = ks.newKieClasspathContainer();
@@ -367,13 +367,13 @@ public class PersonFragranceTest {
         ksession.setGlobal("pq", q);
         Person p = new Person();
         ksession.insert(p);
-        Fragrance f = new Fragrance();
+        Fragrance f = new Fragrance(Projection.INTIMATE, 0);
         ksession.insert(f);
 
         ksession.getAgenda().getAgendaGroup("person_rules").setFocus();
         ksession.fireAllRules();
 
-        assertEquals(f.getProjection(), Projection.INTIMATE);
+        assertEquals(f.getScore(), 5);
 
         ksession.dispose();
         
