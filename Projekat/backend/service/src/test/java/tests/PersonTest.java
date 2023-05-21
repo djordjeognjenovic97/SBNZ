@@ -20,7 +20,6 @@ public class PersonTest {
         KieServices ks = KieServices.Factory.get();
     	KieContainer kc = ks.newKieClasspathContainer();
         KieSession ksession = kc.newKieSession(ksessionName);
-        //ksession.getAgenda().getAgendaGroup("person_rules").setFocus();
 
         PersonQuery q = new PersonQuery(12);
         ksession.setGlobal("pq", q);
@@ -31,6 +30,48 @@ public class PersonTest {
         ksession.fireAllRules();
 
         assertEquals(p.getAgeRange(), AgeRange.CHILD);
+
+        ksession.dispose();
+        
+    }
+
+    @Test
+    public void testPersonAdolescent() {
+
+        KieServices ks = KieServices.Factory.get();
+    	KieContainer kc = ks.newKieClasspathContainer();
+        KieSession ksession = kc.newKieSession(ksessionName);
+
+        PersonQuery q = new PersonQuery(18);
+        ksession.setGlobal("pq", q);
+        Person p = new Person();
+        ksession.insert(p);
+
+        ksession.getAgenda().getAgendaGroup("person_rules").setFocus();
+        ksession.fireAllRules();
+
+        assertEquals(p.getAgeRange(), AgeRange.ADOLESCENT);
+
+        ksession.dispose();
+        
+    }
+
+    @Test
+    public void testPersonOlderAdult() {
+
+        KieServices ks = KieServices.Factory.get();
+    	KieContainer kc = ks.newKieClasspathContainer();
+        KieSession ksession = kc.newKieSession(ksessionName);
+
+        PersonQuery q = new PersonQuery(56);
+        ksession.setGlobal("pq", q);
+        Person p = new Person();
+        ksession.insert(p);
+
+        ksession.getAgenda().getAgendaGroup("person_rules").setFocus();
+        ksession.fireAllRules();
+
+        assertEquals(p.getAgeRange(), AgeRange.OLDER_ADULT);
 
         ksession.dispose();
         

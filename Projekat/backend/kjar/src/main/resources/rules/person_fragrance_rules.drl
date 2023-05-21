@@ -4,6 +4,7 @@ import com.ftn.model.enums.Gender;
 import com.ftn.model.enums.AgeRange;
 import com.ftn.model.enums.Occasion;
 import com.ftn.model.enums.DayOrNight;
+import com.ftn.model.enums.Projection;
 import com.ftn.model.PersonQuery;
 import com.ftn.model.Fragrance;
 import com.ftn.model.Person;
@@ -44,12 +45,60 @@ rule "Add points to Versace fragrances if a person is young adult and male"
         modify($f){ addScore(15); }
 end
 
+rule "Add points to Guerlain fragrances if a person is older adult and male" 
+    agenda-group "person_rules"
+    no-loop
+    salience 5
+    when
+        $p:Person(getAgeRange() == AgeRange.OLDER_ADULT && getGender() == Gender.MALE)
+        $f:Fragrance(getDesigner() != null, getDesigner().equalsIgnoreCase("Guerlain"))
+    then
+        System.out.println("Add points to Guerlain fragrance AR-G rule");
+        modify($f){ addScore(15); }
+end
+
+rule "Add points to Chanel fragrances if a person is adult and male" 
+    agenda-group "person_rules"
+    no-loop
+    salience 5
+    when
+        $p:Person(getAgeRange() == AgeRange.ADULT && getGender() == Gender.MALE)
+        $f:Fragrance(getDesigner() != null, getDesigner().equalsIgnoreCase("Chanel"))
+    then
+        System.out.println("Add points to Chanel fragrance AR-G rule");
+        modify($f){ addScore(15); }
+end
+
+rule "Add points to Lancome fragrances if a person is adult and female" 
+    agenda-group "person_rules"
+    no-loop
+    salience 5
+    when
+        $p:Person(getAgeRange() == AgeRange.ADULT && getGender() == Gender.FEMALE)
+        $f:Fragrance(getDesigner() != null, getDesigner().equalsIgnoreCase("Lancome"))
+    then
+        System.out.println("Add points to Lancome fragrance AR-G rule");
+        modify($f){ addScore(15); }
+end
+
+rule "Add points to Armani fragrances if a person is young adult and female" 
+    agenda-group "person_rules"
+    no-loop
+    salience 5
+    when
+        $p:Person(getAgeRange() == AgeRange.YOUNG_ADULT && getGender() == Gender.FEMALE)
+        $f:Fragrance(getDesigner() != null, getDesigner().equalsIgnoreCase("Armani"))
+    then
+        System.out.println("Add points to Armani fragrance AR-G rule");
+        modify($f){ addScore(15); }
+end
+
 rule "Daytime rule"
     agenda-group "person_fragrance_rules"
     salience 10
     lock-on-active true
     when
-        $f:Fragrance(pq.getOccasion() == Occasion.OFFICE || pq.getOccasion() == Occasion.EVERYDAY)
+        $f:Fragrance(pq != null, pq.getOccasion() == Occasion.OFFICE || pq.getOccasion() == Occasion.EVERYDAY)
         $dn: DayNight()
     then
         System.out.println("Daytime");
@@ -61,9 +110,45 @@ rule "Nighttime rule"
     salience 10
     lock-on-active true
     when
-        $f:Fragrance(pq.getOccasion() == Occasion.PARTY || pq.getOccasion() == Occasion.DATE)
+        $f:Fragrance(pq != null, pq.getOccasion() == Occasion.PARTY || pq.getOccasion() == Occasion.DATE)
         $dn: DayNight()
     then
         System.out.println("Nighttime");
         modify($dn) {setValue(DayOrNight.NIGHT) };
+end
+
+rule "Recommend projection young adult and party"
+    agenda-group "person_rules"
+    salience 4
+    no-loop
+    when
+        $p:Person(pq != null, getAgeRange() == AgeRange.YOUNG_ADULT, pq.getOccasion() == Occasion.PARTY )
+        $f:Fragrance()
+    then
+        System.out.println("Projection strong");
+        modify($f){ setProjection(Projection.STRONG); }
+end
+
+rule "Recommend projection adult and office"
+    agenda-group "person_rules"
+    salience 4
+    no-loop
+    when
+        $p:Person(pq != null, getAgeRange() == AgeRange.ADULT, pq.getOccasion() == Occasion.OFFICE )
+        $f:Fragrance()
+    then
+        System.out.println("Projection intimate");
+        modify($f){ setProjection(Projection.INTIMATE); }
+end
+
+rule "Recommend projection young adult and everyday"
+    agenda-group "person_rules"
+    salience 4
+    no-loop
+    when
+        $p:Person(pq != null, getAgeRange() == AgeRange.YOUNG_ADULT, pq.getOccasion() == Occasion.EVERYDAY )
+        $f:Fragrance()
+    then
+        System.out.println("Projection moderate");
+        modify($f){ setProjection(Projection.MODERATE); }
 end

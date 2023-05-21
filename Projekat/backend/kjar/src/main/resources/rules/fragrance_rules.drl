@@ -34,9 +34,45 @@ rule "Recommend longevity summer daytime"
     salience 5
     no-loop
     when
-        $f:Fragrance(fq.getSeason() == Season.SUMMER)
+        $f:Fragrance(fq != null, fq.getSeason() == Season.SUMMER)
         $dn: DayNight(getValue() == DayOrNight.DAY)
     then
         System.out.println("Longevity short");
         modify($f){ setLongevity(Longevity.SHORT); }
+end
+
+rule "Recommend longevity winter/autumn nighttime"
+    agenda-group "person_fragrance_rules"
+    salience 5
+    no-loop
+    when
+        $f:Fragrance(fq != null, fq.getSeason() == Season.WINTER || fq.getSeason() == Season.AUTUMN)
+        $dn: DayNight(getValue() == DayOrNight.NIGHT)
+    then
+        System.out.println("Longevity long");
+        modify($f){ setLongevity(Longevity.LONG); }
+end
+
+rule "Recommend longevity spring/autumn daytime"
+    agenda-group "person_fragrance_rules"
+    salience 5
+    no-loop
+    when
+        $f:Fragrance(fq != null, fq.getSeason() == Season.AUTUMN || fq.getSeason() == Season.SPRING)
+        $dn: DayNight(getValue() == DayOrNight.DAY)
+    then
+        System.out.println("Longevity medium");
+        modify($f){ setLongevity(Longevity.MEDIUM); }
+end
+
+rule "Recommend longevity winter daytime"
+    agenda-group "person_fragrance_rules"
+    salience 5
+    no-loop
+    when
+        $f:Fragrance(fq != null, fq.getSeason() == Season.WINTER)
+        $dn: DayNight(getValue() == DayOrNight.DAY)
+    then
+        System.out.println("Longevity long");
+        modify($f){ setLongevity(Longevity.LONG); }
 end
