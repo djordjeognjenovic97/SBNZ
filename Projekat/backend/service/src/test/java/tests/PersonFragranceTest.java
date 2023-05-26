@@ -5,8 +5,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import com.ftn.model.DayNight;
 import com.ftn.model.Fragrance;
 import com.ftn.model.FragranceQuery;
+import com.ftn.model.MidClss;
 import com.ftn.model.Person;
 import com.ftn.model.PersonQuery;
+import com.ftn.model.enums.Concentration;
+import com.ftn.model.enums.Cost;
 import com.ftn.model.enums.DayOrNight;
 import com.ftn.model.enums.Gender;
 import com.ftn.model.enums.Longevity;
@@ -231,11 +234,13 @@ public class PersonFragranceTest {
         ksession.setGlobal("fq", fq);
         Fragrance f = new Fragrance();
         DayNight dn = new DayNight();
+        MidClss mc = new MidClss();
         ksession.insert(f);
         ksession.insert(dn);
+        ksession.insert(mc);
         ksession.getAgenda().getAgendaGroup("person_fragrance_rules").setFocus();
         ksession.fireAllRules();
-        assertEquals(f.getLongevity(), Longevity.SHORT);
+        assertEquals(mc.getLongevity(), Longevity.SHORT);
 
         ksession.dispose();
         
@@ -254,11 +259,13 @@ public class PersonFragranceTest {
         ksession.setGlobal("fq", fq);
         Fragrance f = new Fragrance();
         DayNight dn = new DayNight();
+        MidClss mc = new MidClss();
         ksession.insert(f);
         ksession.insert(dn);
+        ksession.insert(mc);
         ksession.getAgenda().getAgendaGroup("person_fragrance_rules").setFocus();
         ksession.fireAllRules();
-        assertEquals(f.getLongevity(), Longevity.LONG);
+        assertEquals(mc.getLongevity(), Longevity.LONG);
 
         ksession.dispose();
         
@@ -277,11 +284,13 @@ public class PersonFragranceTest {
         ksession.setGlobal("fq", fq);
         Fragrance f = new Fragrance();
         DayNight dn = new DayNight();
+        MidClss mc = new MidClss();
         ksession.insert(f);
         ksession.insert(dn);
+        ksession.insert(mc);
         ksession.getAgenda().getAgendaGroup("person_fragrance_rules").setFocus();
         ksession.fireAllRules();
-        assertEquals(f.getLongevity(), Longevity.MEDIUM);
+        assertEquals(mc.getLongevity(), Longevity.MEDIUM);
 
         ksession.dispose();
         
@@ -300,11 +309,13 @@ public class PersonFragranceTest {
         ksession.setGlobal("fq", fq);
         Fragrance f = new Fragrance();
         DayNight dn = new DayNight();
+        MidClss mc = new MidClss();
         ksession.insert(f);
         ksession.insert(dn);
+        ksession.insert(mc);
         ksession.getAgenda().getAgendaGroup("person_fragrance_rules").setFocus();
         ksession.fireAllRules();
-        assertEquals(f.getLongevity(), Longevity.LONG);
+        assertEquals(mc.getLongevity(), Longevity.LONG);
 
         ksession.dispose();
         
@@ -371,6 +382,80 @@ public class PersonFragranceTest {
         ksession.insert(f);
 
         ksession.getAgenda().getAgendaGroup("person_rules").setFocus();
+        ksession.fireAllRules();
+
+        assertEquals(f.getScore(), 5);
+
+        ksession.dispose();
+        
+    }
+
+    @Test
+    public void testCostMedium() {
+
+        KieServices ks = KieServices.Factory.get();
+    	KieContainer kc = ks.newKieClasspathContainer();
+        KieSession ksession = kc.newKieSession(ksessionName);
+
+        FragranceQuery q = new FragranceQuery(7569);
+        ksession.setGlobal("fq", q);
+        Fragrance f = new Fragrance();
+        MidClss mc = new MidClss();
+        ksession.insert(f);
+        ksession.insert(mc);
+        ksession.getAgenda().getAgendaGroup("person_fragrance_rules").setFocus();
+        ksession.fireAllRules();
+
+        assertEquals(mc.getCostTier(), Cost.MEDIUM);
+
+        ksession.dispose();
+        
+    }
+
+    @Test
+    public void testConcentrationThirdLevel() {
+
+        KieServices ks = KieServices.Factory.get();
+    	KieContainer kc = ks.newKieClasspathContainer();
+        KieSession ksession = kc.newKieSession(ksessionName);
+
+        PersonQuery q = new PersonQuery(Occasion.EVERYDAY);
+        ksession.setGlobal("pq", q);
+        FragranceQuery fq = new FragranceQuery(Season.SUMMER, 4000);
+        ksession.setGlobal("fq", fq);
+        Fragrance f = new Fragrance(Concentration.EDC, 0);
+        DayNight dn = new DayNight();
+        MidClss mc = new MidClss();
+        ksession.insert(f);
+        ksession.insert(dn);
+        ksession.insert(mc);
+        ksession.getAgenda().getAgendaGroup("person_fragrance_rules").setFocus();
+        ksession.fireAllRules();
+
+        assertEquals(f.getScore(), 5);
+
+        ksession.dispose();
+        
+    }
+
+    @Test
+    public void testConcentrationThirdLevel2() {
+
+        KieServices ks = KieServices.Factory.get();
+    	KieContainer kc = ks.newKieClasspathContainer();
+        KieSession ksession = kc.newKieSession(ksessionName);
+
+        PersonQuery q = new PersonQuery(Occasion.PARTY);
+        ksession.setGlobal("pq", q);
+        FragranceQuery fq = new FragranceQuery(Season.AUTUMN, 20000);
+        ksession.setGlobal("fq", fq);
+        Fragrance f = new Fragrance(Concentration.PARFUM, 0);
+        DayNight dn = new DayNight();
+        MidClss mc = new MidClss();
+        ksession.insert(f);
+        ksession.insert(dn);
+        ksession.insert(mc);
+        ksession.getAgenda().getAgendaGroup("person_fragrance_rules").setFocus();
         ksession.fireAllRules();
 
         assertEquals(f.getScore(), 5);

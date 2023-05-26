@@ -3,9 +3,12 @@ package rules;
 import com.ftn.model.enums.Season;
 import com.ftn.model.enums.DayOrNight;
 import com.ftn.model.enums.Longevity;
+import com.ftn.model.enums.Cost;
+import com.ftn.model.enums.Concentration;
 import com.ftn.model.Fragrance;
 import com.ftn.model.FragranceQuery;
 import com.ftn.model.DayNight;
+import com.ftn.model.MidClss;
 
 global FragranceQuery fq
 
@@ -36,9 +39,10 @@ rule "Recommend longevity summer daytime"
     when
         $f:Fragrance(fq != null, fq.getSeason() == Season.SUMMER)
         $dn: DayNight(getValue() == DayOrNight.DAY)
+        $mc: MidClss(getLongevity() == null)
     then
         System.out.println("Longevity short");
-        modify($f){ setLongevity(Longevity.SHORT); }
+        modify($mc){ setLongevity(Longevity.SHORT); }
 end
 
 rule "Recommend longevity winter/autumn nighttime"
@@ -48,9 +52,10 @@ rule "Recommend longevity winter/autumn nighttime"
     when
         $f:Fragrance(fq != null, fq.getSeason() == Season.WINTER || fq.getSeason() == Season.AUTUMN)
         $dn: DayNight(getValue() == DayOrNight.NIGHT)
+        $mc: MidClss(getLongevity() == null)
     then
         System.out.println("Longevity long");
-        modify($f){ setLongevity(Longevity.LONG); }
+        modify($mc){ setLongevity(Longevity.LONG); }
 end
 
 rule "Recommend longevity spring/autumn daytime"
@@ -60,9 +65,10 @@ rule "Recommend longevity spring/autumn daytime"
     when
         $f:Fragrance(fq != null, fq.getSeason() == Season.AUTUMN || fq.getSeason() == Season.SPRING)
         $dn: DayNight(getValue() == DayOrNight.DAY)
+        $mc: MidClss(getLongevity() == null)
     then
         System.out.println("Longevity medium");
-        modify($f){ setLongevity(Longevity.MEDIUM); }
+        modify($mc){ setLongevity(Longevity.MEDIUM); }
 end
 
 rule "Recommend longevity winter daytime"
@@ -72,7 +78,96 @@ rule "Recommend longevity winter daytime"
     when
         $f:Fragrance(fq != null, fq.getSeason() == Season.WINTER)
         $dn: DayNight(getValue() == DayOrNight.DAY)
+        $mc: MidClss(getLongevity() == null)
     then
         System.out.println("Longevity long");
-        modify($f){ setLongevity(Longevity.LONG); }
+        modify($mc){ setLongevity(Longevity.LONG); }
+end
+
+rule "Cost is low"
+    agenda-group "person_fragrance_rules"
+    salience 10
+    lock-on-active true
+    when
+        $f:Fragrance(fq != null, fq.getPreviousCost() < 5000)
+        $mc: MidClss()
+    then
+        System.out.println("Low cost");
+        modify($mc){ setCostTier(Cost.LOW); }
+end
+
+rule "Cost is medium"
+    agenda-group "person_fragrance_rules"
+    salience 10
+    lock-on-active true
+    when
+        $f:Fragrance(fq != null, fq.getPreviousCost() >= 5000 && fq.getPreviousCost() < 15000)
+        $mc: MidClss()
+    then
+        System.out.println("Medium cost");
+        modify($mc){ setCostTier(Cost.MEDIUM); }
+end
+
+rule "Cost is high"
+    agenda-group "person_fragrance_rules"
+    salience 10
+    lock-on-active true
+    when
+        $f:Fragrance(fq != null, fq.getPreviousCost() >= 15000)
+        $mc: MidClss()
+    then
+        System.out.println("High cost");
+        modify($mc){ setCostTier(Cost.HIGH); }
+end
+
+rule "Recommend edc short longetivity low cost"
+    agenda-group "person_fragrance_rules"
+    salience 3
+    no-loop true
+    when
+        $mc: MidClss(getCostTier() == Cost.LOW && getLongevity() == Longevity.SHORT)
+        $f:Fragrance(getConcentration() != null, getConcentration() == Concentration.EDC)
+        
+    then
+        System.out.println("Concentration EDC");
+        modify($f){ addScore(5); }
+end
+
+rule "Recommend edt short longetivity medium high cost"
+    agenda-group "person_fragrance_rules"
+    salience 3
+    no-loop
+    when
+        $mc: MidClss(getLongevity() == Longevity.SHORT, getCostTier() == Cost.MEDIUM || getCostTier() == Cost.HIGH)
+        $f:Fragrance(getConcentration() != null, getConcentration() == Concentration.EDT)
+        
+    then
+        System.out.println("Concentration EDT");
+        modify($f){ addScore(5); }
+end
+
+rule "Recommend edp long longetivity low medium cost"
+    agenda-group "person_fragrance_rules"
+    salience 3
+    no-loop
+    when
+        $mc: MidClss(getLongevity() == Longevity.LONG, getCostTier() == Cost.MEDIUM || getCostTier() == Cost.LOW)
+        $f:Fragrance(getConcentration() != null, getConcentration() == Concentration.EDP)
+        
+    then
+        System.out.println("Concentration EDP");
+        modify($f){ addScore(5); }
+end
+
+rule "Recommend parfum long longetivity high cost"
+    agenda-group "person_fragrance_rules"
+    salience 3
+    no-loop
+    when
+        $mc: MidClss(getCostTier() == Cost.HIGH && getLongevity() == Longevity.LONG)
+        $f:Fragrance(getConcentration() != null, getConcentration() == Concentration.PARFUM)
+        
+    then
+        System.out.println("Concentration PARFUM");
+        modify($f){ addScore(5); }
 end

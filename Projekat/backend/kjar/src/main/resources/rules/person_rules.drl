@@ -37,7 +37,6 @@ rule "Person is a young adult"
         $p:Person(pq.getAge()>=19 && pq.getAge()<26)
     then
         System.out.println("Person is a young adult");
-        System.out.println("Person genderis " + $p.getGender());
         modify($p){ setAgeRange(AgeRange.YOUNG_ADULT) };
 end
 

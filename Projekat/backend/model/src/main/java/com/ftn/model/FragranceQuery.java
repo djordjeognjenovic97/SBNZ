@@ -7,6 +7,7 @@ public class FragranceQuery {
     private String brand;
     private Family family;
     private Season season;
+    private Integer previousCost;
 
     public FragranceQuery() {
     }
@@ -19,9 +20,18 @@ public class FragranceQuery {
         this.season = season;
     }
 
+    public FragranceQuery(Integer previousCost) {
+        this.previousCost = previousCost;
+    }
+
     public FragranceQuery(String brand, Family family) {
         this.brand = brand;
         this.family = family;
+    }
+
+    public FragranceQuery(Season season, Integer previousCost) {
+        this.season = season;
+        this.previousCost = previousCost;
     }
 
     public String getBrand() {
@@ -46,6 +56,14 @@ public class FragranceQuery {
 
     public void setSeason(Season season) {
         this.season = season;
+    }
+
+    public Integer getPreviousCost() {
+        return previousCost;
+    }
+
+    public void setPreviousCost(Integer previousCost) {
+        this.previousCost = previousCost;
     }
 
 }

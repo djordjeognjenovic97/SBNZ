@@ -14,6 +14,7 @@ public class Fragrance {
     private Concentration concentration;
     private String designer;
     private Family family;
+    private Double price;
     private Integer score;
 
     public Fragrance() {
@@ -37,6 +38,11 @@ public class Fragrance {
 
     public Fragrance(Projection projection, Integer score) {
         this.projection = projection;
+        this.score = score;
+    }
+
+    public Fragrance(Concentration concentration, Integer score) {
+        this.concentration = concentration;
         this.score = score;
     }
 
@@ -94,6 +100,14 @@ public class Fragrance {
 
     public void setFamily(Family family) {
         this.family = family;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 
     public Integer getScore() {
