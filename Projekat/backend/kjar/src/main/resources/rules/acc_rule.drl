@@ -1,0 +1,27 @@
+package rules;
+
+import com.ftn.model.Fragrance;
+import com.ftn.model.AccumulateFragrance;
+
+rule "Accumulate min max avg brand"
+no-loop
+agenda-group "acc_rule"
+    when
+        $af: AccumulateFragrance()
+        
+        Number($minPrice: intValue) from accumulate (
+            Fragrance( getDesigner().equalsIgnoreCase($af.getBrandName()) , $price: price) from $af.getFragrances(),
+            min($price));
+        Number($maxPrice: intValue) from accumulate (
+            Fragrance( getDesigner().equalsIgnoreCase($af.getBrandName()) , $price: price) from $af.getFragrances(),
+            max($price));
+        Number($avgPrice: doubleValue) from accumulate (
+            Fragrance( getDesigner().equalsIgnoreCase($af.getBrandName()) , $price: price) from $af.getFragrances(),
+            average($price));
+    then
+        modify($af) {setMinPrice($minPrice),
+        setMaxPrice($maxPrice),
+        setAvgPrice($avgPrice) };
+        System.out.println("Nesto"  + $minPrice);
+end;
+

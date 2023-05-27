@@ -2,6 +2,9 @@ package tests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.*;
+
+import com.ftn.model.AccumulateFragrance;
 import com.ftn.model.DayNight;
 import com.ftn.model.Fragrance;
 import com.ftn.model.FragranceQuery;
@@ -459,6 +462,41 @@ public class PersonFragranceTest {
         ksession.fireAllRules();
 
         assertEquals(f.getScore(), 5);
+
+        ksession.dispose();
+        
+    }
+
+    @Test
+    public void testAccumulate() {
+
+        KieServices ks = KieServices.Factory.get();
+    	KieContainer kc = ks.newKieClasspathContainer();
+        KieSession ksession = kc.newKieSession(ksessionName);
+
+        Fragrance f1 = new Fragrance();
+        f1.setDesigner("Dior");
+        f1.setPrice(500);
+        Fragrance f2 = new Fragrance();
+        f2.setDesigner("Dior");
+        f2.setPrice(100);
+        Fragrance f3 = new Fragrance();
+        f3.setDesigner("Chanel");
+        f3.setPrice(5);
+        AccumulateFragrance af = new AccumulateFragrance(); 
+
+        af.setFragrances(new ArrayList<>());
+        af.getFragrances().add(f1);
+        af.getFragrances().add(f2);
+        af.getFragrances().add(f3);
+        af.setBrandName("Dior");
+        ksession.insert(af);
+        ksession.getAgenda().getAgendaGroup("acc_rule").setFocus();
+        ksession.fireAllRules();
+
+        assertEquals(af.getMinPrice(), 100);
+        assertEquals(af.getMaxPrice(), 500);
+        assertEquals(af.getAvgPrice(), 300);
 
         ksession.dispose();
         

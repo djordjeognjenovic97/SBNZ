@@ -14,7 +14,7 @@ public class Fragrance {
     private Concentration concentration;
     private String designer;
     private Family family;
-    private Double price;
+    private Integer price;
     private Integer score;
 
     public Fragrance() {
@@ -102,11 +102,11 @@ public class Fragrance {
         this.family = family;
     }
 
-    public Double getPrice() {
+    public Integer getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(Integer price) {
         this.price = price;
     }
 
