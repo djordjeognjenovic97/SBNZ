@@ -34,6 +34,13 @@ public class FragranceQuery {
         this.previousCost = previousCost;
     }
 
+    public FragranceQuery(String brand, Family family, Season season, Integer previousCost) {
+        this.brand = brand;
+        this.family = family;
+        this.season = season;
+        this.previousCost = previousCost;
+    }
+
     public String getBrand() {
         return brand;
     }

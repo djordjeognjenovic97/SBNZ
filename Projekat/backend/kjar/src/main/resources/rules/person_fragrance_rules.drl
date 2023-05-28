@@ -14,6 +14,7 @@ global PersonQuery pq
 
 rule "Add points to gender"
     agenda-group "person_fragrance_rules"
+    salience 9
     lock-on-active true
     when
         $f:Fragrance(getGender() != null, getGender() == pq.getGender() )
@@ -24,6 +25,7 @@ end
 
 rule "Unisex rule"
     agenda-group "person_fragrance_rules"
+    salience 9
     lock-on-active true
     when
         $f:Fragrance(getGender() != null, getGender() != pq.getGender() && pq.getGender() == Gender.UNISEX )
@@ -32,15 +34,25 @@ rule "Unisex rule"
         modify($f){ addScore(15); }
 end
 
+rule "Unisex another rule"
+    agenda-group "person_fragrance_rules"
+    salience 9
+    lock-on-active true
+    when
+        $f:Fragrance(getGender() != null, getGender() == Gender.UNISEX && pq.getGender() != Gender.UNISEX )
+    then
+        System.out.println("Also smaller points to this (" + $f.getGender()+") fragrance");
+        modify($f){ addScore(15); }
+end
+
 rule "Add points to Versace fragrances if a person is young adult and male" 
     agenda-group "person_rules"
-    no-loop
+    no-loop true
     salience 5
     when
         $p:Person(getAgeRange() == AgeRange.YOUNG_ADULT && getGender() == Gender.MALE)
         $f:Fragrance(getDesigner() != null, getDesigner().equalsIgnoreCase("Versace"))
     then
-        //System.out.println("Add points to (" + $f.getDesigner() + ") fragrance AR-G rule");
         System.out.println("Add points to Versace fragrance AR-G rule");
         modify($f){ addScore(15); }
 end
@@ -126,7 +138,7 @@ rule "Recommend projection young adult and party"
         $f:Fragrance(getProjection() != null, getProjection() == Projection.STRONG)
     then
         System.out.println("Projection strong");
-        modify($f){ addScore(5); }
+        $f.addScore(5);
 end
 
 rule "Recommend projection adult and office"
@@ -138,7 +150,7 @@ rule "Recommend projection adult and office"
         $f:Fragrance(getProjection() != null, getProjection() == Projection.INTIMATE)
     then
         System.out.println("Projection intimate");
-        modify($f){ addScore(5); }
+        $f.addScore(5);
 end
 
 rule "Recommend projection young adult and everyday"
@@ -146,9 +158,10 @@ rule "Recommend projection young adult and everyday"
     salience 4
     no-loop
     when
-        $p:Person(pq != null, getAgeRange() == AgeRange.YOUNG_ADULT, pq.getOccasion() == Occasion.EVERYDAY )
+        $p:Person(pq != null, getAgeRange() == AgeRange.YOUNG_ADULT && pq.getOccasion() == Occasion.EVERYDAY )
         $f:Fragrance(getProjection() != null, getProjection() == Projection.MODERATE)
     then
         System.out.println("Projection moderate");
-        modify($f){ addScore(5); }
+        $f.addScore(5);
+        //modify($f){ addScore(5); }
 end

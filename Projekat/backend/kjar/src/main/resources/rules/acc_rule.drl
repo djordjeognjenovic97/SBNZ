@@ -22,6 +22,8 @@ agenda-group "acc_rule"
         modify($af) {setMinPrice($minPrice),
         setMaxPrice($maxPrice),
         setAvgPrice($avgPrice) };
-        System.out.println("Nesto"  + $minPrice);
+        System.out.println("Min: "  + $minPrice);
+        System.out.println("Max: "  + $maxPrice);
+        System.out.println("Avg: "  + $avgPrice);
 end;
 

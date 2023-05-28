@@ -120,7 +120,7 @@ rule "Cost is high"
         modify($mc){ setCostTier(Cost.HIGH); }
 end
 
-rule "Recommend edc short longetivity low cost"
+rule "Recommend edc short longevity low cost"
     agenda-group "person_fragrance_rules"
     salience 3
     no-loop true
@@ -133,7 +133,7 @@ rule "Recommend edc short longetivity low cost"
         modify($f){ addScore(5); }
 end
 
-rule "Recommend edt short longetivity medium high cost"
+rule "Recommend edt short longevity medium high cost"
     agenda-group "person_fragrance_rules"
     salience 3
     no-loop
@@ -146,7 +146,7 @@ rule "Recommend edt short longetivity medium high cost"
         modify($f){ addScore(5); }
 end
 
-rule "Recommend edp long longetivity low medium cost"
+rule "Recommend edp long longevity low medium cost"
     agenda-group "person_fragrance_rules"
     salience 3
     no-loop
@@ -159,7 +159,7 @@ rule "Recommend edp long longetivity low medium cost"
         modify($f){ addScore(5); }
 end
 
-rule "Recommend parfum long longetivity high cost"
+rule "Recommend parfum long longevity high cost"
     agenda-group "person_fragrance_rules"
     salience 3
     no-loop
@@ -169,5 +169,31 @@ rule "Recommend parfum long longetivity high cost"
         
     then
         System.out.println("Concentration PARFUM");
+        modify($f){ addScore(5); }
+end
+
+rule "Recommend edt medium longevity low cost"
+    agenda-group "person_fragrance_rules"
+    salience 3
+    no-loop
+    when
+        $mc: MidClss(getCostTier() == Cost.LOW && getLongevity() == Longevity.MEDIUM)
+        $f:Fragrance(getConcentration() != null, getConcentration() == Concentration.EDT)
+        
+    then
+        System.out.println("Concentration EDT");
+        modify($f){ addScore(5); }
+end
+
+rule "Recommend edp medium longevity medium high cost"
+    agenda-group "person_fragrance_rules"
+    salience 3
+    no-loop
+    when
+        $mc: MidClss(getLongevity() == Longevity.MEDIUM, getCostTier() == Cost.MEDIUM || getCostTier() == Cost.HIGH)
+        $f:Fragrance(getConcentration() != null, getConcentration() == Concentration.EDP)
+        
+    then
+        System.out.println("Concentration EDP");
         modify($f){ addScore(5); }
 end

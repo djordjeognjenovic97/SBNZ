@@ -46,6 +46,16 @@ public class Fragrance {
         this.score = score;
     }
 
+    public Fragrance(String name, Gender gender, Projection projection, Concentration concentration, String designer, Family family, Integer score) {
+        this.name = name;
+        this.gender = gender;
+        this.projection = projection;
+        this.concentration = concentration;
+        this.designer = designer;
+        this.family = family;
+        this.score = score;
+    }
+
     public String getName() {
         return name;
     }

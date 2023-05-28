@@ -14,6 +14,7 @@ import com.ftn.model.PersonQuery;
 import com.ftn.model.enums.Concentration;
 import com.ftn.model.enums.Cost;
 import com.ftn.model.enums.DayOrNight;
+import com.ftn.model.enums.Family;
 import com.ftn.model.enums.Gender;
 import com.ftn.model.enums.Longevity;
 import com.ftn.model.enums.Occasion;
@@ -468,6 +469,32 @@ public class PersonFragranceTest {
     }
 
     @Test
+    public void testConcentrationThirdLevel3() {
+
+        KieServices ks = KieServices.Factory.get();
+    	KieContainer kc = ks.newKieClasspathContainer();
+        KieSession ksession = kc.newKieSession(ksessionName);
+
+        PersonQuery q = new PersonQuery(Occasion.OFFICE);
+        ksession.setGlobal("pq", q);
+        FragranceQuery fq = new FragranceQuery(Season.SPRING, 13000);
+        ksession.setGlobal("fq", fq);
+        Fragrance f = new Fragrance(Concentration.EDP, 0);
+        DayNight dn = new DayNight();
+        MidClss mc = new MidClss();
+        ksession.insert(f);
+        ksession.insert(dn);
+        ksession.insert(mc);
+        ksession.getAgenda().getAgendaGroup("person_fragrance_rules").setFocus();
+        ksession.fireAllRules();
+
+        assertEquals(f.getScore(), 5);
+
+        ksession.dispose();
+        
+    }
+
+    @Test
     public void testAccumulate() {
 
         KieServices ks = KieServices.Factory.get();
@@ -501,4 +528,41 @@ public class PersonFragranceTest {
         ksession.dispose();
         
     }
+
+    @Test
+    public void testUltimate() {
+
+        KieServices ks = KieServices.Factory.get();
+    	KieContainer kc = ks.newKieClasspathContainer();
+        KieSession ksession = kc.newKieSession(ksessionName);
+
+        PersonQuery q = new PersonQuery(21, Occasion.EVERYDAY, Gender.FEMALE);
+        ksession.setGlobal("pq", q);
+        FragranceQuery fq = new FragranceQuery("JPG", Family.FLORAL, Season.SPRING, 13000);
+        ksession.setGlobal("fq", fq);
+        Person p = new Person();
+        p.setGender(q.getGender());
+        Fragrance f1 = new Fragrance("f1", Gender.FEMALE, Projection.INTIMATE, Concentration.EDP, "JPG", Family.FLORAL, 0);
+        Fragrance f2 = new Fragrance("f2", Gender.UNISEX, Projection.MODERATE, Concentration.EDT, "Armani", Family.FLORAL, 0);
+        DayNight dn = new DayNight();
+        MidClss mc = new MidClss();
+        ksession.insert(p);
+        ksession.insert(f1);
+        ksession.insert(f2);
+        ksession.insert(dn);
+        ksession.insert(mc);
+        ksession.getAgenda().getAgendaGroup("person_rules").setFocus();
+        ksession.fireAllRules();
+        ksession.getAgenda().getAgendaGroup("fragrance_rules").setFocus();
+        ksession.fireAllRules();
+        ksession.getAgenda().getAgendaGroup("person_fragrance_rules").setFocus();
+        ksession.fireAllRules();
+
+        assertEquals(f1.getScore(), 60);
+        assertEquals(f2.getScore(), 45);
+
+        ksession.dispose();
+        
+    }
+
 }
