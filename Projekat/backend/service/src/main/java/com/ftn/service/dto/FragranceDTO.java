@@ -1,13 +1,4 @@
-package com.ftn.model;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+package com.ftn.service.dto;
 
 import com.ftn.model.enums.Concentration;
 import com.ftn.model.enums.Family;
@@ -15,80 +6,22 @@ import com.ftn.model.enums.Gender;
 import com.ftn.model.enums.Longevity;
 import com.ftn.model.enums.Projection;
 
-@Entity
-@Table(name = "fragrance")
-public class Fragrance {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class FragranceDTO {
     private Long id;
-
-    @Column
     private String fname;
-
-    @Enumerated(EnumType.STRING)
     private Gender gender;  
-
-    @Enumerated(EnumType.STRING)
     private Longevity longevity;
-
-    @Enumerated(EnumType.STRING)
     private Projection projection;
-
-    @Enumerated(EnumType.STRING)
     private Concentration concentration;
-
-    @Column
     private String designer;
-
-    @Enumerated(EnumType.STRING)
     private Family family;
-
-    @Column
     private Integer price;
-
-    @Column
     private Integer score;
-
-    public Fragrance() {
+    
+    public FragranceDTO() {
     }
 
-    public Fragrance(String designer, Integer score) {
-        this.designer = designer;
-        this.score = score;
-    }
-
-    public Fragrance(String designer, Family family, Integer score) {
-        this.designer = designer;
-        this.family = family;
-        this.score = score;
-    }
-
-    public Fragrance(Gender gender, Integer score) {
-        this.gender = gender;
-        this.score = score;
-    }
-
-    public Fragrance(Projection projection, Integer score) {
-        this.projection = projection;
-        this.score = score;
-    }
-
-    public Fragrance(Concentration concentration, Integer score) {
-        this.concentration = concentration;
-        this.score = score;
-    }
-
-    public Fragrance(String fname, Gender gender, Projection projection, Concentration concentration, String designer, Family family, Integer score) {
-        this.fname = fname;
-        this.gender = gender;
-        this.projection = projection;
-        this.concentration = concentration;
-        this.designer = designer;
-        this.family = family;
-        this.score = score;
-    }
-
-    public Fragrance(Long id, String fname, Gender gender, Longevity longevity, Projection projection,
+    public FragranceDTO(Long id, String fname, Gender gender, Longevity longevity, Projection projection,
             Concentration concentration, String designer, Family family, Integer price, Integer score) {
         this.id = id;
         this.fname = fname;
@@ -180,9 +113,5 @@ public class Fragrance {
 
     public void setScore(Integer score) {
         this.score = score;
-    }
-
-    public void addScore(Integer score) {
-        this.score += score;
     }
 }
