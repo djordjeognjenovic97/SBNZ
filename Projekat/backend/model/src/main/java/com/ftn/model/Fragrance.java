@@ -17,7 +17,7 @@ import com.ftn.model.enums.Projection;
 
 @Entity
 @Table(name = "fragrance")
-public class Fragrance {
+public class Fragrance implements Comparable { 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -184,5 +184,11 @@ public class Fragrance {
 
     public void addScore(Integer score) {
         this.score += score;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        // TODO Auto-generated method stub
+        return Integer.compare(this.getScore(),((Fragrance) o).getScore());
     }
 }
