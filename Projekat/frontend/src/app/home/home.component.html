@@ -1,1 +1,109 @@
-<p>home works!</p>
+<div>
+  <mat-card>
+  <form>
+    <mat-form-field>
+    <mat-label>Age</mat-label>
+      <input type="number" matInput [formControl]="ageFormControl"
+             placeholder="Age">
+    </mat-form-field>
+    <br/>
+    <mat-form-field>
+      <mat-label>Occasion</mat-label>
+      <mat-select [(value)]="selectOccasion">
+        <mat-option value="PARTY">
+          Party
+        </mat-option>
+        <mat-option value="OFFICE">
+          Office
+        </mat-option>
+        <mat-option value="EVERYDAY">
+          Everyday
+        </mat-option>
+        <mat-option value="DATE">
+          Date
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <br/>
+    <mat-form-field>
+      <mat-label>Brand Name</mat-label>
+      <input type="text" matInput [formControl]="brandNameFormControl"
+             placeholder="Brand name">
+    </mat-form-field>
+    <br/>
+    <mat-form-field>
+      <mat-label>Gender</mat-label>
+      <mat-select [(value)]="selectGender">
+        <mat-option value="MALE">
+          Male
+        </mat-option>
+        <mat-option value="FEMALE">
+          Female
+        </mat-option>
+        <mat-option value="UNISEX">
+          Unisex
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <br/>
+    <mat-form-field>
+      <mat-label>Family</mat-label>
+      <mat-select [(value)]="selectFamily">
+        <mat-option value="WOODY">
+          Woody
+        </mat-option>
+        <mat-option value="SPICY">
+          Spicy
+        </mat-option>
+        <mat-option value="FLORAL">
+          Floral
+        </mat-option>
+        <mat-option value="AROMATIC">
+          Aromatic
+        </mat-option>
+        <mat-option value="LEATHER">
+          Leather
+        </mat-option>
+        <mat-option value="AQUATIC">
+          Aquatic
+        </mat-option>
+        <mat-option value="CITRUS">
+          Citrus
+        </mat-option>
+        <mat-option value="FRUITY">
+          Fruity
+        </mat-option>
+        <mat-option value="AMBER">
+          Amber
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <br/>
+    <mat-form-field>
+      <mat-label>Occasion</mat-label>
+      <mat-select [(value)]="selectSeason">
+        <mat-option value="WINTER">
+          Winter
+        </mat-option>
+        <mat-option value="SPRING">
+          Spring
+        </mat-option>
+        <mat-option value="SUMMER">
+          Summer
+        </mat-option>
+        <mat-option value="AUTUMN">
+          Autumn
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <br/>
+    <mat-form-field>
+      <mat-label>Previous cost</mat-label>
+        <input type="number" matInput [formControl]="previousCostFormControl"
+               placeholder="Previous cost">
+      </mat-form-field>
+      <br/>
+      <button mat-raised-button color="primary" (click)="search()">Search</button>
+  </form>
+</mat-card>
+</div>
