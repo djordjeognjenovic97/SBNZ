@@ -1,5 +1,5 @@
-<div>
-  <mat-card>
+<div class="inputForm">
+  <mat-card class="inputCard">
   <form>
     <mat-form-field>
     <mat-label>Age</mat-label>
@@ -106,4 +106,14 @@
       <button mat-raised-button color="primary" (click)="search()">Search</button>
   </form>
 </mat-card>
+</div>
+
+<div class="results">
+  <mat-card class="resultCard" *ngFor="let fragrance of fragrances">
+    <h3>{{fragrance.name}}</h3>
+    <h5>Designer: {{fragrance.designer}}</h5>
+    <h5>Concentration: {{fragrance.concentration}}</h5>
+    <h5>Price: {{fragrance.price}}</h5>
+    <h3>Score: {{fragrance.score}}</h3>
+  </mat-card>
 </div>

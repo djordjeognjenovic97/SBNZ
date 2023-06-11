@@ -1,6 +1,6 @@
 export class Fragrance {
   id:number;
-  fname:string;
+  name:string;
   gender:string;
   longevity:string;
   projection:string;
@@ -11,7 +11,7 @@ export class Fragrance {
   score:number;
 
  constructor(id:number,
-  fname:string,
+  name:string,
   gender:string,
   longevity:string,
   projection:string,
@@ -21,7 +21,7 @@ export class Fragrance {
   price:number,
   score:number) {
     this.id = id;
-    this.fname = fname;
+    this.name = name;
     this.gender = gender;
     this.longevity = longevity;
     this.projection = projection;

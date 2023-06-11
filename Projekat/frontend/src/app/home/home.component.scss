@@ -1,6 +1,20 @@
-mat-card {
+.inputCard {
   width: 250px;
   padding: 16px;
   margin: 8px;
   text-align: center;
+}
+
+.inputForm {
+  float: left;
+}
+
+.results {
+  float: left;
+  width: 600px;
+}
+
+.resultCard {
+  width: 400px;
+  margin: 16px;
 }

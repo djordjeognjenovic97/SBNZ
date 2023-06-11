@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { FragranceServiceService } from '../fragrance-service.service';
+import { Fragrance } from '../model/fragrance';
 import { FragranceQuery } from '../model/fragranceQuery';
 import { PersonQuery } from '../model/personQuery';
 import { Query } from '../model/query';
@@ -11,6 +12,9 @@ import { Query } from '../model/query';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
+
+  fragrances = new Array<Fragrance>();
+
   brandNameFormControl = new FormControl('');
   ageFormControl = new FormControl('');
   previousCostFormControl = new FormControl('');
@@ -32,7 +36,8 @@ export class HomeComponent implements OnInit {
     console.log(q);
     this.fragranceService.search(q).subscribe(
       result => {
-        console.log(result)
+        console.log(result);
+        this.fragrances = result;
       }
     )
   }
