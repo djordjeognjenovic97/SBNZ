@@ -1,7 +1,7 @@
 .inputCard {
   width: 250px;
   padding: 16px;
-  margin: 8px;
+  margin: 16px;
   text-align: center;
 }
 
@@ -11,10 +11,15 @@
 
 .results {
   float: left;
-  width: 600px;
 }
 
 .resultCard {
   width: 400px;
+  margin: 16px;
+}
+
+.statistics {
+  float: left;
+  width: 300px;
   margin: 16px;
 }

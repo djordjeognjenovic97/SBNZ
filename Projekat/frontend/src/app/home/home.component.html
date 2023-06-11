@@ -117,3 +117,12 @@
     <h3>Score: {{fragrance.score}}</h3>
   </mat-card>
 </div>
+
+<div class="statistics" *ngIf="statistics">
+  <mat-card>
+    <h3>{{statistics.brandName}} statistics</h3>
+    <h4>Min price: {{statistics.minPrice}}</h4>
+    <h4>Max price: {{statistics.maxPrice}}</h4>
+    <h4>Avg price: {{statistics.avgPrice}}</h4>
+  </mat-card>
+</div>

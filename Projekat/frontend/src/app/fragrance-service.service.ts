@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { AccumulateFragrance } from './model/accumulateFragrance';
 import { Fragrance } from './model/fragrance';
 import { Query } from './model/query';
 
@@ -18,4 +19,8 @@ export class FragranceServiceService {
     public search(query: Query):Observable<Fragrance[]>{
       return this.http.post<Fragrance[]>(this.path + "bestFrags", query);
   }
+
+  public getAccumulate(brand: string):Observable<AccumulateFragrance>{
+    return this.http.get<AccumulateFragrance>(this.path + "brandStats/" + brand);
+}
 }

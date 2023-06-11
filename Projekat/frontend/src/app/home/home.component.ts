@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { FragranceServiceService } from '../fragrance-service.service';
+import { AccumulateFragrance } from '../model/accumulateFragrance';
 import { Fragrance } from '../model/fragrance';
 import { FragranceQuery } from '../model/fragranceQuery';
 import { PersonQuery } from '../model/personQuery';
@@ -22,6 +23,7 @@ export class HomeComponent implements OnInit {
   selectGender = 'MALE';
   selectFamily = 'WOODY';
   selectSeason = 'WINTER';
+  statistics: AccumulateFragrance = undefined;
   constructor(
     private fragranceService: FragranceServiceService
   ) { }
@@ -38,6 +40,14 @@ export class HomeComponent implements OnInit {
       result => {
         console.log(result);
         this.fragrances = result;
+        if (this.brandNameFormControl.value) {
+          this.fragranceService.getAccumulate(this.brandNameFormControl.value).subscribe(
+            result => {
+              this.statistics = result;
+              console.log(result);
+            }
+          )
+        }
       }
     )
   }
