@@ -40,16 +40,17 @@ export class HomeComponent implements OnInit {
       result => {
         console.log(result);
         this.fragrances = result;
-        if (this.brandNameFormControl.value) {
-          this.fragranceService.getAccumulate(this.brandNameFormControl.value).subscribe(
-            result => {
-              this.statistics = result;
-              console.log(result);
-            }
-          )
-        }
+
       }
-    )
+    );
+    if (this.brandNameFormControl.value) {
+      this.fragranceService.getAccumulate(this.brandNameFormControl.value).subscribe(
+        result => {
+          this.statistics = result;
+          console.log(result);
+        }
+      );
+    }
   }
 
 }

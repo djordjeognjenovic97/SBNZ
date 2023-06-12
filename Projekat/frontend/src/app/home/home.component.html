@@ -80,7 +80,7 @@
     </mat-form-field>
     <br/>
     <mat-form-field>
-      <mat-label>Occasion</mat-label>
+      <mat-label>Season</mat-label>
       <mat-select [(value)]="selectSeason">
         <mat-option value="WINTER">
           Winter
@@ -110,19 +110,25 @@
 
 <div class="results">
   <mat-card class="resultCard" *ngFor="let fragrance of fragrances">
-    <h3>{{fragrance.name}}</h3>
-    <h5>Designer: {{fragrance.designer}}</h5>
-    <h5>Concentration: {{fragrance.concentration}}</h5>
-    <h5>Price: {{fragrance.price}}</h5>
-    <h3>Score: {{fragrance.score}}</h3>
+    <mat-card-header>
+      <mat-card-title>{{fragrance.name}}</mat-card-title>
+      <mat-card-subtitle>Score: {{fragrance.score}}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <p><b>Designer:</b> {{fragrance.designer}}</p>
+      <p><b>Concentration:</b> {{fragrance.concentration}}</p>
+      <p><b>Price:</b> {{fragrance.price}}</p>
+    </mat-card-content>
   </mat-card>
 </div>
 
 <div class="statistics" *ngIf="statistics">
   <mat-card>
-    <h3>{{statistics.brandName}} statistics</h3>
-    <h4>Min price: {{statistics.minPrice}}</h4>
-    <h4>Max price: {{statistics.maxPrice}}</h4>
-    <h4>Avg price: {{statistics.avgPrice}}</h4>
+    <mat-card-header>
+      <mat-card-title>{{statistics.brandName}} statistics</mat-card-title>
+    </mat-card-header>
+    <h4><b>Min price:</b> {{statistics.minPrice}}</h4>
+    <h4><b>Max price:</b> {{statistics.maxPrice}}</h4>
+    <h4><b>Avg price:</b> {{statistics.avgPrice}}</h4>
   </mat-card>
 </div>
