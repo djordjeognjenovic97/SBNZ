@@ -39,7 +39,7 @@ rule "Unisex another rule"
     salience 9
     lock-on-active true
     when
-        $f:Fragrance(getGender() != null, getGender() == Gender.UNISEX && pq.getGender() != Gender.UNISEX )
+        $f:Fragrance(getGender() != null, getGender() == Gender.UNISEX && pq.getGender() != Gender.UNISEX && pq.getGender() != null)
     then
         System.out.println("Also smaller points to this (" + $f.getGender()+") fragrance");
         modify($f){ addScore(15); }

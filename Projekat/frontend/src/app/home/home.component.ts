@@ -19,10 +19,10 @@ export class HomeComponent implements OnInit {
   brandNameFormControl = new FormControl('');
   ageFormControl = new FormControl('');
   previousCostFormControl = new FormControl('');
-  selectOccasion = 'PARTY';
-  selectGender = 'MALE';
-  selectFamily = 'WOODY';
-  selectSeason = 'WINTER';
+  selectOccasion = null;
+  selectGender = null;
+  selectFamily = null;
+  selectSeason = null;
   statistics: AccumulateFragrance = undefined;
   constructor(
     private fragranceService: FragranceServiceService
@@ -32,6 +32,7 @@ export class HomeComponent implements OnInit {
   }
 
   search(): void {
+    this.statistics = undefined;
     let personQuery = new PersonQuery(this.ageFormControl.value, this.selectOccasion, this.selectGender);
     let fragranceQuery = new FragranceQuery(this.brandNameFormControl.value, this.selectFamily, this.selectSeason, this.previousCostFormControl.value);
     let q = new Query(personQuery, fragranceQuery);
